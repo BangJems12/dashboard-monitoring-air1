@@ -1,0 +1,13 @@
+# File rahasia Supabase
+.streamlit/secrets.toml
+
+# Virtual environment Python
+.venv/
+venv/
+
+# Cache Python
+__pycache__/
+*.pyc
+
+# File konfigurasi lokal
+.env
