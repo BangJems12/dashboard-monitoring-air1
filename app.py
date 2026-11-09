@@ -43,12 +43,17 @@ sembunyikan_adc_invalid = st.sidebar.checkbox(
     "Sembunyikan ADC turbidity tidak valid dari tabel/CSV", value=True
 )
 otomatis = st.sidebar.checkbox(
-    "Penyegaran otomatis setiap 60 detik", value=False
+    "Aktifkan penyegaran otomatis", value=True
+)
+interval_refresh = st.sidebar.selectbox(
+    "Interval penyegaran (detik)", [3, 4], index=1,
+    disabled=not otomatis,
 )
 st.sidebar.button("🔄 Muat ulang data sekarang")
 st.sidebar.caption(
-    "Mode manual aktif secara default untuk membantu pemeriksaan koneksi Supabase. "
-    "Gunakan menu Rerun aplikasi atau aktifkan penyegaran otomatis setelah data muncul."
+    "Default: setiap 4 detik. Pilih 3 detik jika diperlukan. "
+    "Refresh hanya mengambil data yang sudah tersimpan di Supabase; "
+    "interval pengiriman ESP32 diatur terpisah."
 )
 
 
@@ -289,9 +294,7 @@ def tampilkan_dashboard() -> None:
 
 if otomatis:
     if hasattr(st, "fragment"):
-        # Opsional setelah koneksi terbukti benar; sebelumnya dekorator ini
-        # menyulitkan identifikasi area dashboard yang kosong.
-        st.fragment(run_every="60s")(tampilkan_dashboard)()
+        st.fragment(run_every=f"{interval_refresh}s")(tampilkan_dashboard)()
     else:
         st.warning("Versi Streamlit belum mendukung st.fragment; memakai mode manual.")
         tampilkan_dashboard()
