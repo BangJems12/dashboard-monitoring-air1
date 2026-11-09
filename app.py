@@ -46,8 +46,10 @@ otomatis = st.sidebar.checkbox(
     "Aktifkan penyegaran otomatis", value=True
 )
 interval_refresh = st.sidebar.selectbox(
-    "Interval penyegaran (detik)", [3, 4], index=1,
-    disabled=not otomatis,
+    "Interval penyegaran (detik)",
+    [1, 2, 3, 4],
+    index=2,
+    disabled=not otomatis
 )
 st.sidebar.button("🔄 Muat ulang data sekarang")
 st.sidebar.caption(
