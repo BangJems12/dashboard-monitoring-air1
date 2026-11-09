@@ -93,3 +93,10 @@ def ambil_data(limit: int) -> pd.DataFrame:
     df["turbidity_index_grafik"] = df["turbidity_index"].where(
         df["turbidity_adc_valid"] & index_valid
     )
+if otomatis:
+    if hasattr(st, "fragment"):
+        st.fragment(run_every="60s")(tampilkan_dashboard)()
+    else:
+        tampilkan_dashboard()
+else:
+    tampilkan_dashboard()
