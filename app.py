@@ -42,7 +42,14 @@ banyak_data = st.sidebar.selectbox(
 sembunyikan_adc_invalid = st.sidebar.checkbox(
     "Sembunyikan ADC turbidity tidak valid dari tabel/CSV", value=True
 )
-st.sidebar.caption("Penyegaran otomatis setiap 60 detik selama dashboard aktif.")
+otomatis = st.sidebar.checkbox(
+    "Penyegaran otomatis setiap 60 detik", value=False
+)
+st.sidebar.button("🔄 Muat ulang data sekarang")
+st.sidebar.caption(
+    "Mode manual aktif secara default untuk membantu pemeriksaan koneksi Supabase. "
+    "Gunakan menu Rerun aplikasi atau aktifkan penyegaran otomatis setelah data muncul."
+)
 
 
 def ambil_data(limit: int) -> pd.DataFrame:
@@ -86,11 +93,3 @@ def ambil_data(limit: int) -> pd.DataFrame:
     df["turbidity_index_grafik"] = df["turbidity_index"].where(
         df["turbidity_adc_valid"] & index_valid
     )
-
-    df = df.dropna(subset=["waktu_wib"]).sort_values("waktu_wib")
-    return df
-
-
-def angka_terbaru(value, unit="", digit=2) -> str:
-    if value is None or pd.isna(value):
-        return "—"
